@@ -23962,12 +23962,7 @@ extract_roam_scan_ap_stats_tlv(wmi_unified_t wmi_handle, void *evt_buf,
 	uint8_t i;
 
 	param_buf = (WMI_ROAM_STATS_EVENTID_param_tlvs *)evt_buf;
-	if (!param_buf) {
-		WMI_LOGE("%s Param buf is NULL", __func__);
-		return QDF_STATUS_E_FAILURE;
-	}
-
-	if (ap_idx >= param_buf->num_roam_ap_info) {
+	if (!param_buf || ap_idx >= param_buf->num_roam_ap_info) {
 		WMI_LOGE("Invalid roam scan AP tlv ap_idx:%d total_ap:%d",
 			 ap_idx, param_buf->num_roam_ap_info);
 		return QDF_STATUS_E_FAILURE;
@@ -24126,6 +24121,7 @@ extract_roam_11kv_stats_tlv(wmi_unified_t wmi_handle, void *evt_buf,
 	if (!dst->num_freq || !param_buf->num_roam_neighbor_report_chan_info ||
 	    rpt_idx >= param_buf->num_roam_neighbor_report_chan_info)
 		return QDF_STATUS_SUCCESS;
+	}
 
 	if (!param_buf->roam_neighbor_report_chan_info) {
 		WMI_LOGD("%s: 11kv channel present, but TLV is NULL num_freq:%d",
